@@ -1,7 +1,7 @@
 {
-  "name": "esports",
+  "name": "esports-api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/esports/src",
+  "sourceRoot": "apps/esports-api/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,10 +10,10 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/esports",
-        "main": "apps/esports/src/main.ts",
-        "tsConfig": "apps/esports/tsconfig.app.json",
-        "assets": ["apps/esports/src/assets"]
+        "outputPath": "dist/apps/esports-api",
+        "main": "apps/esports-api/src/main.ts",
+        "tsConfig": "apps/esports-api/tsconfig.app.json",
+        "assets": ["apps/esports-api/src/assets"]
       },
       "configurations": {
         "production": {
@@ -22,8 +22,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/esports/src/environments/environment.ts",
-              "with": "apps/esports/src/environments/environment.prod.ts"
+              "replace": "apps/esports-api/src/environments/environment.ts",
+              "with": "apps/esports-api/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -32,11 +32,11 @@
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "esports:build"
+        "buildTarget": "esports-api:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "esports:build:production"
+          "buildTarget": "esports-api:build:production"
         }
       }
     },
@@ -44,14 +44,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/esports/**/*.ts"]
+        "lintFilePatterns": ["apps/esports-api/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/esports"],
+      "outputs": ["coverage/apps/esports-api"],
       "options": {
-        "jestConfig": "apps/esports/jest.config.ts",
+        "jestConfig": "apps/esports-api/jest.config.ts",
         "passWithNoTests": true
       }
     }
