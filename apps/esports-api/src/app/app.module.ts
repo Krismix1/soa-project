@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { EsportsApiFeatureAuthModule } from '@project-assignment/esports-api/feature-auth';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [EsportsApiFeatureAuthModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
