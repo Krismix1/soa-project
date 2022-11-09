@@ -13,7 +13,8 @@
         "outputPath": "dist/apps/esports-api",
         "main": "apps/esports-api/src/main.ts",
         "tsConfig": "apps/esports-api/tsconfig.app.json",
-        "assets": ["apps/esports-api/src/assets"]
+        "assets": ["apps/esports-api/src/assets"],
+        "tsPlugins": ["@nestjs/swagger/plugin"]
       },
       "configurations": {
         "production": {
