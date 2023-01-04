@@ -20,6 +20,7 @@ export class AuthFacade {
 
   logIn(creds: UserCreds) {
     this.store.dispatch(AuthActions.logIn(creds));
+    return this.actions$.pipe(ofType(AuthActions.logInSuccess));
   }
 
   logOut(): void {
