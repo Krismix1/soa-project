@@ -1,0 +1,34 @@
+{
+  "name": "shared-data-models-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/data-models-api/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/data-models-api",
+        "main": "libs/shared/data-models-api/src/index.ts",
+        "tsConfig": "libs/shared/data-models-api/tsconfig.lib.json",
+        "assets": ["libs/shared/data-models-api/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/shared/data-models-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/shared/data-models-api"],
+      "options": {
+        "jestConfig": "libs/shared/data-models-api/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:models"]
+}

@@ -11,17 +11,11 @@ async function bootstrap() {
   setupOpenAPI(app);
 
   await app.listen(port);
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
+  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
 function setupOpenAPI(app: INestApplication) {
-  const config = new DocumentBuilder()
-    .setTitle('ESports API')
-    .setVersion('1.0')
-    .addTag('auth')
-    .build();
+  const config = new DocumentBuilder().setTitle('ESports API').setVersion('1.0').addTag('auth').build();
 
   const document = SwaggerModule.createDocument(app, config);
 

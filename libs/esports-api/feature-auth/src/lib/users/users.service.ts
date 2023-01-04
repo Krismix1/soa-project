@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from '@project-assignment/shared/data-models-api';
 import * as bcrypt from 'bcrypt';
 import { bcryptConstants } from '../constants';
-import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class UsersService {
         username,
         password,
         repeatPassword: password,
-      })
+      }),
     );
   }
 
@@ -35,10 +35,7 @@ export class UsersService {
     if (createsUserDto.password.length < 8) {
       throw new Error('Password must be at least 8 characters long');
     }
-    const passwordHash = await bcrypt.hash(
-      createsUserDto.password,
-      bcryptConstants.saltRounds
-    );
+    const passwordHash = await bcrypt.hash(createsUserDto.password, bcryptConstants.saltRounds);
 
     this.users.push({
       id: this.users.length + 1,

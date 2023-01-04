@@ -20,12 +20,7 @@ import { UsersModule } from './users/users.module';
     }),
   ],
   controllers: [EsportsApiFeatureAuthController],
-  providers: [
-    EsportsApiFeatureAuthService,
-    LocalStrategy,
-    JwtStrategy,
-    { provide: APP_GUARD, useClass: JwtAuthGuard },
-  ],
+  providers: [EsportsApiFeatureAuthService, LocalStrategy, JwtStrategy, { provide: APP_GUARD, useClass: JwtAuthGuard }],
   exports: [EsportsApiFeatureAuthService],
 })
 export class EsportsApiFeatureAuthModule {}

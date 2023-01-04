@@ -50,7 +50,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/esports-api"],
+      "outputs": ["{workspaceRoot}/coverage/apps/esports-api"],
       "options": {
         "jestConfig": "apps/esports-api/jest.config.ts",
         "passWithNoTests": true

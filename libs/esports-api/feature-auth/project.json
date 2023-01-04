@@ -13,7 +13,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/esports-api/feature-auth"],
+      "outputs": ["{workspaceRoot}/coverage/libs/esports-api/feature-auth"],
       "options": {
         "jestConfig": "libs/esports-api/feature-auth/jest.config.ts",
         "passWithNoTests": true

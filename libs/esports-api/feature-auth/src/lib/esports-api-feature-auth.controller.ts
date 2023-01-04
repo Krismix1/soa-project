@@ -1,20 +1,18 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import { CreateUserDto } from '@project-assignment/shared/data-models-api';
 import { Request } from 'express';
 import { Public } from './anon';
 import { EsportsApiFeatureAuthService } from './esports-api-feature-auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
-import { CreateUserDto } from './users/dto/create-user.dto';
 import { User } from './users/entities/user.entity';
 import { UsersService } from './users/users.service';
 
 @Controller('auth')
 export class EsportsApiFeatureAuthController {
-  constructor(
-    private authService: EsportsApiFeatureAuthService,
-    private userService: UsersService
-  ) {}
+  constructor(private authService: EsportsApiFeatureAuthService, private userService: UsersService) {}
 
   @Public()
+  @HttpCode(200)
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req: Request) {
