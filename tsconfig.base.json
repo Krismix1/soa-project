@@ -16,9 +16,12 @@
     "baseUrl": ".",
     "paths": {
       "@project-assignment/esports-api/feature-auth": ["libs/esports-api/feature-auth/src/index.ts"],
+      "@project-assignment/esports-api/feature-posts": ["libs/esports-api/feature-posts/src/index.ts"],
       "@project-assignment/esports/auth/data-access": ["libs/esports/auth/data-access/src/index.ts"],
       "@project-assignment/esports/auth/feature": ["libs/esports/auth/feature/src/index.ts"],
       "@project-assignment/esports/home/feature": ["libs/esports/home/feature/src/index.ts"],
+      "@project-assignment/esports/posts/data-access": ["libs/esports/posts/data-access/src/index.ts"],
+      "@project-assignment/esports/posts/feature": ["libs/esports/posts/feature/src/index.ts"],
       "@project-assignment/shared/data-models-api": ["libs/shared/data-models-api/src/index.ts"]
     }
   },

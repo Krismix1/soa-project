@@ -10,7 +10,7 @@ export class LoggedOutGuard implements CanActivate {
   canActivate(): Observable<boolean | UrlTree> {
     return this.authFacade.isLoggedIn$.pipe(
       map((isLoggedIn) => {
-        return !isLoggedIn ? true : this.router.createUrlTree(['/']);
+        return !isLoggedIn ? true : this.router.createUrlTree(['/home']);
       }),
     );
   }

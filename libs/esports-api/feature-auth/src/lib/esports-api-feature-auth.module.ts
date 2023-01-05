@@ -16,7 +16,7 @@ import { UsersModule } from './users/users.module';
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '300s' },
+      signOptions: { expiresIn: '900s' },
     }),
   ],
   controllers: [EsportsApiFeatureAuthController],

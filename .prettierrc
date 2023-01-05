@@ -9,5 +9,6 @@
   "arrowParens": "always",
   "htmlWhitespaceSensitivity": "css",
   "endOfLine": "lf",
-  "printWidth": 120
+  "printWidth": 120,
+  "tailwindConfig": "apps/esports/tailwind.config.js"
 }

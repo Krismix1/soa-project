@@ -1,4 +1,3 @@
-import { provideHttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
@@ -13,7 +12,7 @@ import { AuthService } from './auth.service';
     AuthService,
     provideEffects([AuthEffects]),
     provideState(fromAuth.AUTH_FEATURE_KEY, fromAuth.authReducer),
-    provideHttpClient(),
+    // provideHttpClient(withRequestsMadeViaParent()),
   ],
 })
 export class EsportsAuthDataAccessModule {}

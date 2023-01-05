@@ -15,7 +15,13 @@ async function bootstrap() {
 }
 
 function setupOpenAPI(app: INestApplication) {
-  const config = new DocumentBuilder().setTitle('ESports API').setVersion('1.0').addTag('auth').build();
+  const config = new DocumentBuilder()
+    .setTitle('ESports API')
+    .setVersion('1.0')
+    .addTag('auth')
+    .addTag('posts')
+    .addTag('users')
+    .build();
 
   const document = SwaggerModule.createDocument(app, config);
 

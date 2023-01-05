@@ -1,0 +1,77 @@
+<form [formGroup]="postForm" (submit)="submitPost()">
+  <div class="card">
+    <div class="content-container">
+      <button id="shareSomething" class="shareBtn" (click)="handleShowForm()" *ngIf="!showForm">
+        Share something.....
+      </button>
+      <div class="inputPost" *ngIf="showForm">
+        <textarea
+          id="postTextField"
+          class="inputFiled"
+          placeholder="Write something here..."
+          formControlName="content"
+          autofocus
+          #contentInput
+        >
+        </textarea>
+        <input
+          #file
+          type="file"
+          id="attachmentInput"
+          accept="image/png,image/jpg,image/jpeg,image/gif"
+          (change)="selectAttachment(file.files)"
+        />
+        <ng-container *ngrxLet="imagePreviewData$ as previewData">
+          <div class="imgInfo" *ngIf="previewData">
+            <img [src]="previewData" />
+            <button (click)="discardAttachment()">Remove attachment</button>
+          </div>
+        </ng-container>
+        <button type="submit">Create</button>
+        <ng-container *ngrxLet="errorMessage$ as errorMessage">
+          <div *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</div>
+        </ng-container>
+      </div>
+    </div>
+    <!-- <div class="action-buttons">
+      <ul class="left">
+        <li class="image">
+          <a class="image-btn" (click)="openModal(template)">
+            <img class="photo" src="assets/photo.svg" /> <span class="btn-text">Images</span></a
+          >
+        </li>
+      </ul>
+      <ul class="right">
+        <li>
+          <button id="btnPost" type="button" (click)="submitPost()" class="btnPost">Post</button>
+        </li>
+      </ul>
+    </div> -->
+  </div>
+  <!-- <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Upload picture</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="reset(); modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="dropbox" *ngIf="!imgURL">
+        <span style="color: red" *ngIf="message">{{ message }}</span>
+        <input class="uploadFile" type="file" #file accept="image/*" (change)="preview(file.files)" />
+        <p>
+          Drag your picture here to begin<br />
+          or click to browse
+        </p>
+      </div>
+      <div *ngIf="imgURL">
+        <h3>Selected file: {{ name }}</h3>
+        <img [src]="imgURL" height="200" />
+        <div class="imgBtns">
+          <button class="cancel" (click)="reset()">Cancel</button>
+          <button class="addImage" (click)="addImage(); modalRef.hide()">Add image</button>
+        </div>
+      </div>
+    </div>
+  </ng-template> -->
+</form>

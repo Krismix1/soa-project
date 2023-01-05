@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from '@project-assignment/shared/data-models-api';
+import { CreateUserDto, UserDetails } from '@project-assignment/shared/data-models-api';
 import * as bcrypt from 'bcrypt';
 import { bcryptConstants } from '../constants';
 import { User } from './entities/user.entity';
@@ -46,5 +46,17 @@ export class UsersService {
 
   async findOne(username: string): Promise<User | undefined> {
     return this.users.find((user) => user.username === username);
+  }
+}
+
+@Injectable()
+export class UserToDTOMapper {
+  mapOne(user: User): UserDetails {
+    const { password: _, ...details } = user;
+    return details;
+  }
+
+  mapMany(users: User[]): UserDetails[] {
+    return users.map((user) => this.mapOne(user));
   }
 }
