@@ -18,7 +18,7 @@ if (environment.production) {
 }
 
 export function localStorageSyncReducer(reducer: ActionReducer<unknown>): ActionReducer<unknown> {
-  return localStorageSync({ keys: [{ [AUTH_FEATURE_KEY]: ['access_token'] }], rehydrate: true })(reducer);
+  return localStorageSync({ keys: [{ [AUTH_FEATURE_KEY]: ['accessToken'] }], rehydrate: true })(reducer);
 }
 const metaReducers: Array<MetaReducer<unknown, Action>> = [localStorageSyncReducer];
 

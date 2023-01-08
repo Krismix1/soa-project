@@ -10,7 +10,7 @@ export const appRoutes: Route[] = [
     providers: [AuthenticatedGuard, importProvidersFrom(EsportsAuthDataAccessModule), LoggedOutGuard],
     children: [
       {
-        path: 'home',
+        path: '',
         loadChildren: () =>
           import('@project-assignment/esports/home/feature').then((mod) => mod.esportsHomeFeatureRoutes),
         canActivate: [AuthenticatedGuard],

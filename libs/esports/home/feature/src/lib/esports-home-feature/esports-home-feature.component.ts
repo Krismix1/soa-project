@@ -1,29 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { EsportsPostsDataAccessModule, PostsFacade } from '@project-assignment/esports/posts/data-access';
-import { CreatePostComponent, EsportsPostsFeatureComponent } from '@project-assignment/esports/posts/feature';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { LetModule } from '@ngrx/component';
+import { AuthFacade } from '@project-assignment/esports/auth/data-access';
+import { EsportsUsersDataAccessModule, UsersFacade } from '@project-assignment/esports/users/data-access';
+import { FeedComponent } from '../feed/feed.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'project-assignment-esports-home-feature',
   standalone: true,
-  imports: [CommonModule, EsportsPostsFeatureComponent, EsportsPostsDataAccessModule, CreatePostComponent],
+  imports: [CommonModule, EsportsUsersDataAccessModule, HeaderComponent, FeedComponent, LetModule, RouterModule],
   templateUrl: './esports-home-feature.component.html',
   styleUrls: ['./esports-home-feature.component.scss'],
 })
 export class EsportsHomeFeatureComponent implements OnInit {
-  posts$ = this.postsFacade.allPosts$;
+  currentUser$ = this.userFacade.currentUser$;
 
-  @ViewChild(CreatePostComponent) createPostComponent: CreatePostComponent | undefined;
-
-  constructor(private postsFacade: PostsFacade) {}
+  constructor(private authFacade: AuthFacade, private router: Router, private userFacade: UsersFacade) {}
 
   ngOnInit(): void {
-    this.postsFacade.init();
+    this.userFacade.getCurrentUser();
   }
 
-  postCreated(postData: { content: string; attachment?: File }): void {
-    this.postsFacade.createPost({ content: postData.content }, postData.attachment).subscribe(() => {
-      this.createPostComponent?.resetForm();
-    });
+  handleLogOut(): void {
+    this.authFacade.logOut();
+    this.router.navigateByUrl('/account/login');
   }
 }

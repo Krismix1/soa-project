@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService, UserToDTOMapper } from '@project-assignment/esports-api/feature-auth';
+import { EsportsApiFeatureUsersService, UserToDTOMapper } from '@project-assignment/esports-api/feature-users';
 import { CreatePostDto, GetPostDto, UpdatePostDto } from '@project-assignment/shared/data-models-api';
 import { Post } from './entities/post.entity';
 import { StorageService } from './storage/storage.service';
@@ -53,10 +53,10 @@ export class PostService {
     },
   ];
 
-  constructor(private userService: UsersService, private storageService: StorageService) {}
+  constructor(private userService: EsportsApiFeatureUsersService, private storageService: StorageService) {}
 
-  async create(createPostDto: CreatePostDto, file: Express.Multer.File | undefined, creatorId: string): Promise<Post> {
-    const creator = await this.userService.findOne(creatorId);
+  async create(createPostDto: CreatePostDto, file: Express.Multer.File | undefined, creatorId: number): Promise<Post> {
+    const creator = this.userService.findOneById(creatorId);
     const storedFileName: string | undefined = file
       ? await this.storageService.uploadFile(file.buffer, file.originalname)
       : undefined;

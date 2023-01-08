@@ -1,4 +1,4 @@
-import { User } from '@project-assignment/esports-api/feature-auth';
+import { User } from '@project-assignment/esports-api/feature-users';
 
 export class Post {
   id: number;

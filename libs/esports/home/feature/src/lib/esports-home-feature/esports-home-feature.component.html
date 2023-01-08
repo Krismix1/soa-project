@@ -1,2 +1,8 @@
-<project-assignment-create-post (created)="postCreated($event)"></project-assignment-create-post>
-<project-assignment-posts-list [posts]="(posts$ | async) ?? []"></project-assignment-posts-list>
+<ng-container *ngrxLet="currentUser$ as currentUser">
+  <project-assignment-header
+    *ngIf="currentUser"
+    [user]="currentUser"
+    (logOut)="handleLogOut()"
+  ></project-assignment-header>
+</ng-container>
+<router-outlet></router-outlet>

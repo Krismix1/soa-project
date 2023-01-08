@@ -1,33 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateUserDto, UserDetails } from '@project-assignment/shared/data-models-api';
 import * as bcrypt from 'bcrypt';
-import { bcryptConstants } from '../constants';
 import { User } from './entities/user.entity';
 
 @Injectable()
-export class UsersService {
+export class EsportsApiFeatureUsersService implements OnModuleInit {
   private readonly users: User[] = [];
 
-  constructor() {
-    [
+  async onModuleInit() {
+    const users = [
       {
+        id: 1,
         username: 'john',
         password: '12345678',
       },
       {
+        id: 2,
         username: 'maria',
         password: '1234567890',
       },
-    ].forEach(({ username, password }) =>
-      this.create({
-        username,
-        password,
-        repeatPassword: password,
-      }),
-    );
+    ];
+    for (const { username, password } of users) {
+      await this.create(
+        {
+          username,
+          password,
+          repeatPassword: password,
+        },
+        10,
+      );
+    }
   }
 
-  async create(createsUserDto: CreateUserDto) {
+  async create(createsUserDto: CreateUserDto, saltRounds: number) {
     // https://docs.nestjs.com/exception-filters#custom-exceptions
     if (createsUserDto.password !== createsUserDto.repeatPassword) {
       throw new Error("Passwords don't match");
@@ -35,7 +40,7 @@ export class UsersService {
     if (createsUserDto.password.length < 8) {
       throw new Error('Password must be at least 8 characters long');
     }
-    const passwordHash = await bcrypt.hash(createsUserDto.password, bcryptConstants.saltRounds);
+    const passwordHash = await bcrypt.hash(createsUserDto.password, saltRounds);
 
     this.users.push({
       id: this.users.length + 1,
@@ -44,8 +49,12 @@ export class UsersService {
     });
   }
 
-  async findOne(username: string): Promise<User | undefined> {
+  findOneByUsername(username: string): User | undefined {
     return this.users.find((user) => user.username === username);
+  }
+
+  findOneById(id: number): User | undefined {
+    return this.users.find((user) => user.id === id);
   }
 }
 

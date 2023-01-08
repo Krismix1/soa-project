@@ -1,0 +1,3 @@
+<div *ngrxLet="selectedUser$ as selectedUser" class="flex h-screen w-full justify-center items-center">
+  <project-assignment-user-profile *ngIf="selectedUser" [userDetails]="selectedUser"></project-assignment-user-profile>
+</div>

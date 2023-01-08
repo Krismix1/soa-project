@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, PartialType } from '@nestjs/swagger';
-import { User } from '@project-assignment/esports-api/feature-auth';
+import { User } from '@project-assignment/esports-api/feature-users';
 import { CreatePostDto, GetPostDto } from '@project-assignment/shared/data-models-api';
 import { Request } from 'express';
 import 'multer';
@@ -46,7 +46,7 @@ export class PostController {
     file?: Express.Multer.File,
   ) {
     const user = req.user as User;
-    const post = await this.postService.create(createPostDto, file, user.username);
+    const post = await this.postService.create(createPostDto, file, user.id);
     return await this.mapper.mapOne(post);
   }
 

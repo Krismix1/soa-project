@@ -1,4 +1,4 @@
-import { HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthFacade, EXCLUDE_REQUEST } from '@project-assignment/esports/auth/data-access';
@@ -24,7 +24,9 @@ export const authInterceptor: HttpInterceptorFn = (
       return next(req);
     }),
     catchError((err) => {
-      router.navigateByUrl('/account/login');
+      if (err instanceof HttpErrorResponse && err.status === 401) {
+        router.navigateByUrl('/account/login');
+      }
       return throwError(() => err);
     }),
   );

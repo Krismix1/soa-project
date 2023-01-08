@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { EsportsApiFeatureUsersService, User } from '@project-assignment/esports-api/feature-users';
 import { LoginResponse } from '@project-assignment/shared/data-models-api';
 import * as bcrypt from 'bcrypt';
-import { User } from './users/entities/user.entity';
-import { UsersService } from './users/users.service';
 
 export interface TokenPayload {
   username: string;
@@ -12,10 +11,10 @@ export interface TokenPayload {
 
 @Injectable()
 export class EsportsApiFeatureAuthService {
-  constructor(private usersService: UsersService, private jwtService: JwtService) {}
+  constructor(private usersService: EsportsApiFeatureUsersService, private jwtService: JwtService) {}
 
   async validateUser(username: string, pass: string): Promise<Omit<User, 'password'>> {
-    const user = await this.usersService.findOne(username);
+    const user = this.usersService.findOneByUsername(username);
     if (user && (await bcrypt.compare(pass, user.password))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;

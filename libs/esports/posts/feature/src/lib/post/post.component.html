@@ -1,5 +1,5 @@
 <div class="flex max-w-sm items-center space-x-4 rounded-xl bg-white p-6 shadow-lg">
-  <a [routerLink]="['/user', post.creator.id]" class="shrink-0 hover:bg-gray-400">
+  <a [routerLink]="['/users', post.creator.id]" class="shrink-0 hover:bg-gray-400">
     <img ngxGravatar [size]="24" [email]="post.creator.username" class="h-12 w-12" />
     <span>{{ post.creator.username }}</span>
   </a>
