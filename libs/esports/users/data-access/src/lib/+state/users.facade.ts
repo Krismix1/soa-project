@@ -13,6 +13,17 @@ export class UsersFacade {
 
   loaded$ = this.store.pipe(select(UsersSelectors.selectUsersLoaded));
   selectedUser$ = this.store.pipe(select(UsersSelectors.selectEntity));
+  selectIsSelectedUserTheLoggedInUser$ = this.store.pipe(select(UsersSelectors.selectIsSelectedUserTheLoggedInUser));
+  selectIsCurrentUserFriendWithSelectedUser$ = this.store.pipe(
+    select(UsersSelectors.selectIsCurrentUserFriendWithSelectedUser),
+  );
+  selectHasCurrentUserOutgoingPendingConnectionWithSelectedUser$ = this.store.pipe(
+    select(UsersSelectors.selectHasCurrentUserOutgoingPendingConnectionWithSelectedUser),
+  );
+  selectHasCurrentUserIncomingPendingConnectionWithSelectedUser$ = this.store.pipe(
+    select(UsersSelectors.selectHasCurrentUserIncomingPendingConnectionWithSelectedUser),
+  );
+  selectCurrentUserConnections$ = this.store.pipe(select(UsersSelectors.selectCurrentUserConnections));
 
   getCurrentUser() {
     return this.store.dispatch(UsersActions.getCurrentUserDetails());

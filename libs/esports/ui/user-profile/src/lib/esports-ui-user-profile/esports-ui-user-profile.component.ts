@@ -7,10 +7,10 @@ import { GravatarModule } from 'ngx-gravatar';
   selector: 'project-assignment-user-profile',
   standalone: true,
   imports: [CommonModule, GravatarModule],
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss'],
+  templateUrl: './esports-ui-user-profile.component.html',
+  styleUrls: ['./esports-ui-user-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserProfileComponent {
+export class EsportsUiUserProfileComponent {
   @Input() userDetails!: UserDetails;
 }

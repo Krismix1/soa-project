@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, from, map, mergeMap, of, switchMap } from 'rxjs';
 import { UserService } from '../user.service';
 
+import * as ConnectionsActions from '@project-assignment/esports/connections/data-access';
 import * as UsersActions from './users.actions';
 
 @Injectable()
@@ -26,10 +27,14 @@ export class UsersEffects {
   loadSelectedUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(UsersActions.getUserDetails),
-      switchMap((action) => {
+      mergeMap((action) => {
         return this.userService
           .getUserDetails(action.id)
-          .pipe(map((user) => UsersActions.getUserDetailsSuccess({ user })));
+          .pipe(
+            switchMap((user) =>
+              from([UsersActions.getUserDetailsSuccess({ user }), ConnectionsActions.selectUser({ id: user.id })]),
+            ),
+          );
       }),
     );
   });

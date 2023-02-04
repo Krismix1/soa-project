@@ -8,7 +8,7 @@ export class EsportsApiFeatureUsersService implements OnModuleInit {
   private readonly users: User[] = [];
 
   async onModuleInit() {
-    const users = [
+    const users: User[] = [
       {
         id: 1,
         username: 'john',
@@ -18,6 +18,16 @@ export class EsportsApiFeatureUsersService implements OnModuleInit {
         id: 2,
         username: 'maria',
         password: '1234567890',
+      },
+      {
+        id: 3,
+        username: 'john2',
+        password: '12345678',
+      },
+      {
+        id: 4,
+        username: 'joh3n',
+        password: '12345678',
       },
     ];
     for (const { username, password } of users) {
@@ -42,11 +52,13 @@ export class EsportsApiFeatureUsersService implements OnModuleInit {
     }
     const passwordHash = await bcrypt.hash(createsUserDto.password, saltRounds);
 
-    this.users.push({
+    const user = {
       id: this.users.length + 1,
       username: createsUserDto.username,
       password: passwordHash,
-    });
+    };
+    this.users.push(user);
+    return user;
   }
 
   findOneByUsername(username: string): User | undefined {

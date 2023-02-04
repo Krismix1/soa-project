@@ -2,7 +2,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpReq
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthFacade, EXCLUDE_REQUEST } from '@project-assignment/esports/auth/data-access';
-import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, take, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
@@ -17,6 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (
   }
 
   return authFacade.authToken$.pipe(
+    take(1),
     switchMap((authToken) => {
       if (authToken !== undefined) {
         req = req.clone({ setHeaders: { Authorization: `Bearer ${authToken}` } });

@@ -1,0 +1,35 @@
+<ng-container *ngrxLet="friendConnections$ as connections">
+  <div *ngIf="connections.length" class="flex h-full w-full flex-col items-center justify-center">
+    <div>User has {{ connections.length }} friend{{ connections.length === 1 ? '' : 's' }}</div>
+    <project-assignment-user-profile
+      *ngFor="let connection of connections"
+      [userDetails]="connection.to"
+      class="cursor-pointer p-4"
+      (click)="selectUser(connection.to)"
+    ></project-assignment-user-profile>
+  </div>
+</ng-container>
+
+<ng-container *ngrxLet="incomingConnections$ as connections">
+  <div *ngIf="connections.length" class="flex h-full w-full flex-col items-center justify-center">
+    <div>Following users want to be friends with you:</div>
+    <project-assignment-user-profile
+      *ngFor="let connection of connections"
+      [userDetails]="connection.from"
+      class="cursor-pointer p-4"
+      (click)="selectUser(connection.from)"
+    ></project-assignment-user-profile>
+  </div>
+</ng-container>
+
+<ng-container *ngrxLet="outgoingConnections$ as connections">
+  <div *ngIf="connections.length" class="flex h-full w-full flex-col items-center justify-center">
+    <div>You want to be friends with the following users:</div>
+    <project-assignment-user-profile
+      *ngFor="let connection of connections"
+      [userDetails]="connection.to"
+      class="cursor-pointer p-4"
+      (click)="selectUser(connection.to)"
+    ></project-assignment-user-profile>
+  </div>
+</ng-container>

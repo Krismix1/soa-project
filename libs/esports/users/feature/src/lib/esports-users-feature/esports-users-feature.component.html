@@ -1,3 +1,48 @@
-<div *ngrxLet="selectedUser$ as selectedUser" class="flex h-screen w-full justify-center items-center">
-  <project-assignment-user-profile *ngIf="selectedUser" [userDetails]="selectedUser"></project-assignment-user-profile>
+<div *ngIf="selectedUser$ | async as selectedUser" class="flex h-screen w-full items-center justify-center">
+  <project-assignment-user-profile [userDetails]="selectedUser"></project-assignment-user-profile>
+  <a
+    [routerLink]="['/users', selectedUser.id]"
+    routerLinkActive="text-cyan-900"
+    [routerLinkActiveOptions]="{ exact: true }"
+    class="p-2 text-cyan-600 underline"
+    >Posts</a
+  ><a routerLink="friends" routerLinkActive="text-cyan-900" class="p-2 text-cyan-600 underline">Friends</a>
+  <ng-container *ngIf="(selectIsSelectedUserTheLoggedInUser$ | async) === false">
+    <button
+      *ngIf="selectHasCurrentUserIncomingPendingConnectionWithSelectedUser$ | async"
+      class="m-2 border-2 border-orange-300 p-2 hover:bg-orange-200"
+      (click)="acceptPendingConnection(selectedUser)"
+    >
+      Accept friend request
+    </button>
+    <button
+      *ngIf="
+        (selectHasCurrentUserIncomingPendingConnectionWithSelectedUser$ | async) ||
+        (selectHasCurrentUserOutgoingPendingConnectionWithSelectedUser$ | async)
+      "
+      class="m-2 border-2 border-orange-300 p-2 hover:bg-orange-200"
+      (click)="deletePendingConnection(selectedUser)"
+    >
+      Delete friend request
+    </button>
+    <button
+      *ngIf="selectIsCurrentUserFriendWithSelectedUser$ | async"
+      class="m-2 border-2 border-orange-300 p-2 hover:bg-orange-200"
+      (click)="deleteFriend(selectedUser)"
+    >
+      Delete friend
+    </button>
+    <button
+      *ngIf="
+        (selectIsCurrentUserFriendWithSelectedUser$ | async) === false &&
+        (selectHasCurrentUserIncomingPendingConnectionWithSelectedUser$ | async) === false &&
+        (selectHasCurrentUserOutgoingPendingConnectionWithSelectedUser$ | async) === false
+      "
+      class="m-2 border-2 border-orange-300 p-2 hover:bg-orange-200"
+      (click)="sendFriendRequest(selectedUser)"
+    >
+      Send friend request
+    </button>
+  </ng-container>
 </div>
+<router-outlet></router-outlet>

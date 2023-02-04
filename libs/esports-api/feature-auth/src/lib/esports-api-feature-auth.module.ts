@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { EsportsApiFeatureConnectionsModule } from '@project-assignment/esports-api/feature-connections';
 import { EsportsApiFeatureUsersModule } from '@project-assignment/esports-api/feature-users';
 import { jwtConstants } from './constants';
 import { EsportsApiFeatureAuthController } from './esports-api-feature-auth.controller';
@@ -18,6 +19,7 @@ import { LocalStrategy } from './local.strategy';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '900s' },
     }),
+    EsportsApiFeatureConnectionsModule,
   ],
   controllers: [EsportsApiFeatureAuthController],
   providers: [EsportsApiFeatureAuthService, LocalStrategy, JwtStrategy, { provide: APP_GUARD, useClass: JwtAuthGuard }],

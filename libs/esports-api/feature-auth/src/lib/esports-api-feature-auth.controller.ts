@@ -1,5 +1,6 @@
 import { Body, Controller, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { EsportsApiFeatureConnectionsService } from '@project-assignment/esports-api/feature-connections';
 import { EsportsApiFeatureUsersService, User } from '@project-assignment/esports-api/feature-users';
 import { CreateUserDto } from '@project-assignment/shared/data-models-api';
 import { Request } from 'express';
@@ -10,7 +11,11 @@ import { LocalAuthGuard } from './local-auth.guard';
 @ApiTags('auth')
 @Controller('auth')
 export class EsportsApiFeatureAuthController {
-  constructor(private authService: EsportsApiFeatureAuthService, private userService: EsportsApiFeatureUsersService) {}
+  constructor(
+    private authService: EsportsApiFeatureAuthService,
+    private userService: EsportsApiFeatureUsersService,
+    private connectionsService: EsportsApiFeatureConnectionsService,
+  ) {}
 
   @Public()
   @HttpCode(200)
@@ -22,7 +27,8 @@ export class EsportsApiFeatureAuthController {
 
   @Public()
   @Post('register')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto, 10);
+  async create(@Body() createUserDto: CreateUserDto) {
+    const user = await this.userService.create(createUserDto, 10);
+    await this.connectionsService.createUser(user.id.toString());
   }
 }
