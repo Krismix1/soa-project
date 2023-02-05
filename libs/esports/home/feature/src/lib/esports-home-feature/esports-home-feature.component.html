@@ -5,4 +5,13 @@
     (logOut)="handleLogOut()"
   ></project-assignment-header>
 </ng-container>
+<project-assignment-chat-widget
+  *ngrxLet="{ chatMessages: chatMessages$, chats: chats$ } as vm"
+  class="fixed bottom-8 right-8"
+  [messages]="vm.chatMessages"
+  [visibleChats]="vm.chats"
+  (chatSelected)="onSelectChat($event)"
+  (send)="sendMessage($event)"
+  (chatClosed)="onChatClosed()"
+></project-assignment-chat-widget>
 <router-outlet></router-outlet>

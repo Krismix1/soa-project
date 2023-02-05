@@ -20,6 +20,7 @@
           id="attachmentInput"
           accept="image/png,image/jpg,image/jpeg,image/gif"
           (change)="selectAttachment(file.files)"
+          class="block w-full text-sm text-slate-500 file:mr-4 file:rounded-full file:border-0 file:bg-violet-50 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-violet-700 hover:file:bg-violet-100"
         />
         <ng-container *ngrxLet="imagePreviewData$ as previewData">
           <div class="imgInfo" *ngIf="previewData">

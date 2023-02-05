@@ -1,4 +1,4 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConnectionType } from '@project-assignment/shared/data-models-api';
 import type { Node, Relationship } from 'neo4j-driver';
 import * as Neode from 'neode';
@@ -81,10 +81,13 @@ export class EsportsApiFeatureConnectionsService implements OnModuleInit, OnModu
 
   async requestConnection(id_from: string, id_to: string) {
     if (id_from === id_to) {
-      throw new Error("can't connect to self");
+      throw new HttpException("can't connect to self", HttpStatus.BAD_REQUEST);
     }
     if ((await this.areConnected(id_from, id_to)) || (await this.areWaitingForConnection(id_from, id_to))) {
-      throw new Error('users are already connected or have a pending connection request');
+      throw new HttpException(
+        'users are already connected or have a pending connection request',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
     }
 
     const [fromNode, toNode] = await Promise.all([this.userModel.find(id_from), this.userModel.find(id_to)]);
@@ -94,7 +97,7 @@ export class EsportsApiFeatureConnectionsService implements OnModuleInit, OnModu
 
   async acceptConnection(id_from: string, id_to: string) {
     if (!(await this.areWaitingForConnection(id_from, id_to))) {
-      throw new Error('must request connection first');
+      throw new HttpException('must request connection first', HttpStatus.UNPROCESSABLE_ENTITY);
     }
     await this.deleteConnection(id_from, id_to);
 

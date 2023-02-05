@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateUserDto, UserDetails } from '@project-assignment/shared/data-models-api';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
@@ -45,10 +45,10 @@ export class EsportsApiFeatureUsersService implements OnModuleInit {
   async create(createsUserDto: CreateUserDto, saltRounds: number) {
     // https://docs.nestjs.com/exception-filters#custom-exceptions
     if (createsUserDto.password !== createsUserDto.repeatPassword) {
-      throw new Error("Passwords don't match");
+      throw new HttpException("Passwords don't match", HttpStatus.BAD_REQUEST);
     }
     if (createsUserDto.password.length < 8) {
-      throw new Error('Password must be at least 8 characters long');
+      throw new HttpException('Password must be at least 8 characters long', HttpStatus.BAD_REQUEST);
     }
     const passwordHash = await bcrypt.hash(createsUserDto.password, saltRounds);
 
