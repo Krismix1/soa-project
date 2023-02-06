@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, from, map, of, switchMap } from 'rxjs';
+import { catchError, exhaustMap, from, map, mergeMap, of, switchMap } from 'rxjs';
 import { ConnectionsService } from '../connections.service';
 
 import * as ConnectionsActions from './connections.actions';
@@ -14,7 +14,7 @@ export class ConnectionsEffects {
   init$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ConnectionsActions.initConnections),
-      exhaustMap((action) =>
+      mergeMap((action) =>
         this.connectionsService.getConnections(action.userId).pipe(
           map((connections) => ConnectionsActions.loadConnectionsSuccess({ connections, userId: action.userId })),
           catchError((error: HttpErrorResponse) =>

@@ -12,8 +12,8 @@ import { AuthFacade } from '@project-assignment/esports/auth/data-access';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  email = new FormControl('');
-  password = new FormControl('');
+  email = new FormControl('john');
+  password = new FormControl('12345678');
   rememberMe = new FormControl(false);
 
   constructor(private authFacade: AuthFacade, private route: ActivatedRoute, private router: Router) {}

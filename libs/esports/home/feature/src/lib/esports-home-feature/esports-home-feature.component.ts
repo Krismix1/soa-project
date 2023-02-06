@@ -10,7 +10,7 @@ import {
 import { ChatWidgetComponent } from '@project-assignment/esports/ui/chat';
 import { EsportsUsersDataAccessModule, UsersFacade } from '@project-assignment/esports/users/data-access';
 import { ChatShortDetails, UserDetails } from '@project-assignment/shared/data-models-api';
-import { filter, map, Observable, shareReplay, Subject, Subscription, withLatestFrom } from 'rxjs';
+import { filter, map, Subject, Subscription, withLatestFrom } from 'rxjs';
 import { FeedComponent } from '../feed/feed.component';
 import { HeaderComponent } from '../header/header.component';
 
@@ -54,12 +54,10 @@ export class EsportsHomeFeatureComponent implements OnInit, OnDestroy {
     const validCurrentUser$ = this.currentUser$.pipe(
       filter((u) => !!u),
       map((u) => u as UserDetails),
-      shareReplay(1),
     );
     const validSelectedChat$ = this.selectedChat$.pipe(
       filter((v) => !!v),
       map((v) => v as ChatShortDetails),
-      shareReplay(1),
     );
 
     this.subscriptions.push(

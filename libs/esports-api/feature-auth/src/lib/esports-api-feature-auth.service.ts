@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { EsportsApiFeatureUsersService, User } from '@project-assignment/esports-api/feature-users';
-import { LoginResponse } from '@project-assignment/shared/data-models-api';
+import { EsportsApiFeatureUsersService } from '@project-assignment/esports-api/feature-users';
+import { LoginResponse, User } from '@project-assignment/shared/data-models-api';
 import * as bcrypt from 'bcrypt';
 
 export interface TokenPayload {

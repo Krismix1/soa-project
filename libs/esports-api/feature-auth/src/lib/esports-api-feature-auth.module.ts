@@ -1,15 +1,11 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { EsportsApiFeatureConnectionsModule } from '@project-assignment/esports-api/feature-connections';
 import { EsportsApiFeatureUsersModule } from '@project-assignment/esports-api/feature-users';
-import { jwtConstants } from './constants';
+import { EsportsApiSharedProxyClientsModule } from '@project-assignment/esports-api/shared-proxy-clients';
+import { jwtConstants } from '@project-assignment/shared/data-models-api';
 import { EsportsApiFeatureAuthController } from './esports-api-feature-auth.controller';
 import { EsportsApiFeatureAuthService } from './esports-api-feature-auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard';
-import { JwtStrategy } from './jwt.strategy';
-import { LocalStrategy } from './local.strategy';
 
 @Module({
   imports: [
@@ -19,10 +15,10 @@ import { LocalStrategy } from './local.strategy';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '900s' },
     }),
-    EsportsApiFeatureConnectionsModule,
+    EsportsApiSharedProxyClientsModule,
   ],
   controllers: [EsportsApiFeatureAuthController],
-  providers: [EsportsApiFeatureAuthService, LocalStrategy, JwtStrategy, { provide: APP_GUARD, useClass: JwtAuthGuard }],
+  providers: [EsportsApiFeatureAuthService],
   exports: [EsportsApiFeatureAuthService],
 })
 export class EsportsApiFeatureAuthModule {}

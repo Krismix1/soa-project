@@ -25,6 +25,6 @@ export class SignupComponent {
         password: this.password.value as string,
         repeatPassword: this.repeatPassword.value as string,
       })
-      .subscribe(() => this.router.navigateByUrl('/login'));
+      .subscribe(() => this.router.navigateByUrl('/account/login'));
   }
 }

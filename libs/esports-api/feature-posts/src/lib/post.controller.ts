@@ -14,8 +14,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, PartialType } from '@nestjs/swagger';
-import { User } from '@project-assignment/esports-api/feature-users';
-import { CreatePostDto, GetPostDto } from '@project-assignment/shared/data-models-api';
+import { CreatePostDto, GetPostDto, User } from '@project-assignment/shared/data-models-api';
 import { Request } from 'express';
 import 'multer';
 import { PostService, PostToDTOMapper } from './post.service';

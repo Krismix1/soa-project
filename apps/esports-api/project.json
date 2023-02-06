@@ -57,5 +57,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": ["connections-service", "users-service"]
 }

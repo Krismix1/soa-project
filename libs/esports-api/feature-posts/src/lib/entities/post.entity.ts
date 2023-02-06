@@ -1,4 +1,4 @@
-import { User } from '@project-assignment/esports-api/feature-users';
+import { User } from '@project-assignment/shared/data-models-api';
 
 export class Post {
   id: number;

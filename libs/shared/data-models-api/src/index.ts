@@ -1,4 +1,5 @@
 export * from './lib/dto/auth/auth.dto';
+export * from './lib/dto/auth/constants';
 export * from './lib/dto/auth/create-user.dto';
 export * from './lib/dto/auth/user.dto';
 export * from './lib/dto/base.dto';

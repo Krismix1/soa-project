@@ -20,6 +20,7 @@
       "@project-assignment/esports-api/feature-messages": ["libs/esports-api/feature-messages/src/index.ts"],
       "@project-assignment/esports-api/feature-posts": ["libs/esports-api/feature-posts/src/index.ts"],
       "@project-assignment/esports-api/feature-users": ["libs/esports-api/feature-users/src/index.ts"],
+      "@project-assignment/esports-api/shared-proxy-clients": ["libs/esports-api/shared-proxy-clients/src/index.ts"],
       "@project-assignment/esports/auth/data-access": ["libs/esports/auth/data-access/src/index.ts"],
       "@project-assignment/esports/auth/feature": ["libs/esports/auth/feature/src/index.ts"],
       "@project-assignment/esports/chat-messages/data-access": ["libs/esports/chat-messages/data-access/src/index.ts"],

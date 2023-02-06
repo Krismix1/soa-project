@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable, OnModuleDestroy, OnModuleInit } 
 import { ConnectionType } from '@project-assignment/shared/data-models-api';
 import type { Node, Relationship } from 'neo4j-driver';
 import * as Neode from 'neode';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const NeodeConstr = require('neode');
 
 export interface Neo4jUser {
   user_id: string;
@@ -23,7 +25,7 @@ export class EsportsApiFeatureConnectionsService implements OnModuleInit, OnModu
   private userModel!: Neode.Model<Neo4jUser>;
 
   async onModuleInit() {
-    this.instance = new Neode('bolt://localhost:7687', 'username', 'password');
+    this.instance = new NeodeConstr('bolt://localhost:7687', 'username', 'password');
     this.userModel = this.instance.model('User', {
       user_id: {
         primary: true,
@@ -62,7 +64,9 @@ export class EsportsApiFeatureConnectionsService implements OnModuleInit, OnModu
       },
       true,
     );
+  }
 
+  async loadDummyData() {
     await this.userModel.deleteAll();
     await Promise.all(['1', '2', '3', '4'].map((id) => this.createUser(id)));
     await Promise.all(

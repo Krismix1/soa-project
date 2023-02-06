@@ -1,6 +1,11 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
-import { User } from '@project-assignment/esports-api/feature-users';
-import { ChatEntity, ChatShortDetails, CreateChatDTO, GetMessage } from '@project-assignment/shared/data-models-api';
+import {
+  ChatEntity,
+  ChatShortDetails,
+  CreateChatDTO,
+  GetMessage,
+  User,
+} from '@project-assignment/shared/data-models-api';
 import { Request } from 'express';
 import { EsportsApiFeatureMessagesService } from './esports-api-feature-messages.service';
 

@@ -86,7 +86,28 @@
         "jestConfig": "apps/esports/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "serve-with-services": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "nx serve users-service"
+          },
+          {
+            "command": "nx serve connections-service"
+          },
+          {
+            "command": "nx serve esports-api"
+          },
+          {
+            "command": "nx serve esports"
+          }
+        ],
+        "parallel": true
+      }
     }
   },
-  "tags": ["scope:users", "type:ui"]
+  "tags": ["scope:users", "type:ui"],
+  "implicitDependencies": ["esports-api"]
 }

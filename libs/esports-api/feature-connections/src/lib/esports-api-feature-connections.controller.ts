@@ -1,68 +1,91 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
-import { EsportsApiFeatureUsersService, User, UserToDTOMapper } from '@project-assignment/esports-api/feature-users';
+import { Controller, OnModuleInit } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
+import { UsersServiceProxy } from '@project-assignment/esports-api/shared-proxy-clients';
 import {
   FriendConnection,
   GetConnectionDTO,
   IncomingPendingConnection,
   OutgoingPendingConnection,
   RequestConnectionDTO,
+  User,
 } from '@project-assignment/shared/data-models-api';
-import { Request } from 'express';
+import { combineLatest, defaultIfEmpty, map, Observable, switchMap } from 'rxjs';
 import { EsportsApiFeatureConnectionsService } from './esports-api-feature-connections.service';
 
-@Controller('connections')
-export class EsportsApiFeatureConnectionsController {
+@Controller()
+export class EsportsApiFeatureConnectionsController implements OnModuleInit {
   constructor(
     private esportsApiFeatureConnectionsService: EsportsApiFeatureConnectionsService,
-    private userService: EsportsApiFeatureUsersService,
-    private userMapper: UserToDTOMapper,
+    private userService: UsersServiceProxy,
   ) {}
 
-  @Post('/request')
-  async requestConnection(@Req() req: Request, @Body() body: RequestConnectionDTO) {
-    const currentUser = req.user as User;
+  async onModuleInit() {
+    await this.esportsApiFeatureConnectionsService.onModuleInit();
+    await this.esportsApiFeatureConnectionsService.loadDummyData();
+  }
+
+  @MessagePattern({ cmd: 'request_connection' })
+  async requestConnection(data: { currentUser: User; payload: RequestConnectionDTO }): Promise<{ id: number }> {
     const connectionId = await this.esportsApiFeatureConnectionsService.requestConnection(
-      currentUser.id.toString(),
-      body.toUser,
+      data.currentUser.id.toString(),
+      data.payload.toUser,
     );
     return {
       id: connectionId,
     };
   }
 
-  @Post('/accept')
-  async acceptConnection(@Req() req: Request, @Body() body: RequestConnectionDTO) {
-    const currentUser = req.user as User;
-    return await this.esportsApiFeatureConnectionsService.acceptConnection(currentUser.id.toString(), body.toUser);
+  @MessagePattern({ cmd: 'accept_connection' })
+  async acceptConnection(data: { currentUser: User; payload: RequestConnectionDTO }): Promise<void> {
+    return await this.esportsApiFeatureConnectionsService.acceptConnection(
+      data.currentUser.id.toString(),
+      data.payload.toUser,
+    );
   }
 
-  @Post('/reject')
-  async rejectConnection(@Req() req: Request, @Body() body: RequestConnectionDTO) {
-    const currentUser = req.user as User;
-    return await this.esportsApiFeatureConnectionsService.deleteConnection(currentUser.id.toString(), body.toUser);
+  @MessagePattern({ cmd: 'reject_connection' })
+  async rejectConnection(data: { currentUser: User; payload: RequestConnectionDTO }): Promise<void> {
+    return await this.esportsApiFeatureConnectionsService.deleteConnection(
+      data.currentUser.id.toString(),
+      data.payload.toUser,
+    );
   }
 
-  @Get(':id')
-  async getConnections(@Param('id') id: string, @Req() req: Request): Promise<GetConnectionDTO[]> {
-    const currentUser = req.user as User;
+  @MessagePattern({ cmd: 'get_connections' })
+  async getConnections(data: { id: string; currentUser: User }): Promise<Observable<GetConnectionDTO[]>> {
+    const { id, currentUser } = data;
     const connections = await this.esportsApiFeatureConnectionsService.getConnections(id, {
       includePending: currentUser.id === +id,
     });
-    return connections.map((connection): GetConnectionDTO => {
-      const isOutgoingConnection = 'to' in connection;
-      const user = isOutgoingConnection ? connection.to : connection.from;
-      if (isOutgoingConnection) {
-        return {
-          id: connection.id,
-          type: connection.type,
-          to: this.userMapper.mapOne(this.userService.findOneById(+user)),
-        } as OutgoingPendingConnection | FriendConnection;
-      }
-      return {
-        id: connection.id,
-        type: connection.type,
-        from: this.userMapper.mapOne(this.userService.findOneById(+user)),
-      } as IncomingPendingConnection;
-    });
+    return combineLatest(
+      connections.map((connection): Observable<GetConnectionDTO> => {
+        const isOutgoingConnection = 'to' in connection;
+        const user = isOutgoingConnection ? connection.to : connection.from;
+        if (isOutgoingConnection) {
+          return this.userService.findOneById(+user).pipe(
+            switchMap((user) => this.userService.mapOne(user)),
+            map(
+              (userDetails) =>
+                ({
+                  id: connection.id,
+                  type: connection.type,
+                  to: userDetails,
+                } as OutgoingPendingConnection | FriendConnection),
+            ),
+          );
+        }
+        return this.userService.findOneById(+user).pipe(
+          switchMap((user) => this.userService.mapOne(user)),
+          map(
+            (userDetails) =>
+              ({
+                id: connection.id,
+                type: connection.type,
+                from: userDetails,
+              } as IncomingPendingConnection),
+          ),
+        );
+      }),
+    ).pipe(defaultIfEmpty([]));
   }
 }
