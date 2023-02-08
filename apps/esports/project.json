@@ -98,7 +98,7 @@
             "command": "nx serve connections-service"
           },
           {
-            "command": "nx serve esports-api"
+            "command": "nx serve esports-api --configuration=development"
           },
           {
             "command": "nx serve esports"

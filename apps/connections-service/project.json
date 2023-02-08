@@ -19,7 +19,13 @@
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/connections-service/src/environments/environment.ts",
+              "with": "apps/connections-service/src/environments/environment.prod.ts"
+            }
+          ]
         }
       }
     },

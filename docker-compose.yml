@@ -11,8 +11,71 @@ services:
       NEO4J_AUTH: 'none'
 
   redis:
-    image: "redis:6-alpine"
+    image: 'redis:6-alpine'
     expose:
       - 6379
     ports:
-      - "6379:6379"
+      - '6379:6379'
+
+  frontend:
+    build:
+      dockerfile: docker/ui/Dockerfile
+      context: .
+    container_name: frontend
+    ports:
+      - 8080:8080
+    environment:
+      API_GATEWAY_URL: http://api_gateway:3333
+    depends_on:
+      - api_gateway
+
+  api_gateway:
+    container_name: api_gateway
+    build:
+      dockerfile: docker/api/Dockerfile
+      context: .
+      args:
+        BUILD_COMMAND: npx nx run esports-api:build:production
+    command: node dist/apps/esports-api/main.js
+    ports:
+      - 3333:3333
+    env_file:
+      - docker.env
+
+    depends_on:
+      - redis
+      - connections_service
+      - users_service
+    volumes:
+      - ./gcloud-storage-svc.json:/home/soa/backend/gcloud-storage-svc.json:ro
+
+  connections_service:
+    container_name: connections_service
+    build:
+      dockerfile: docker/api/Dockerfile
+      context: .
+      args:
+        BUILD_COMMAND: npx nx run connections-service:build:production
+    command: node dist/apps/connections-service/main.js
+    environment:
+      NEO4J_URL: bolt://neo4j:7687
+    expose:
+      - 8889
+    env_file:
+      - docker.env
+    depends_on:
+      - redis
+      - neo4j
+
+  users_service:
+    container_name: users_service
+    build:
+      dockerfile: docker/api/Dockerfile
+      context: .
+      args:
+        BUILD_COMMAND: npx nx run users-service:build:production
+    expose:
+      - 8888
+    env_file:
+      - docker.env
+    command: node dist/apps/users-service/main.js

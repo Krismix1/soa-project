@@ -27,6 +27,14 @@
               "with": "apps/esports-api/src/environments/environment.prod.ts"
             }
           ]
+        },
+        "development": {
+          "fileReplacements": [
+            {
+              "replace": "apps/esports-api/src/environments/environment.ts",
+              "with": "apps/esports-api/src/environments/environment.dev.ts"
+            }
+          ]
         }
       }
     },
@@ -38,6 +46,9 @@
       "configurations": {
         "production": {
           "buildTarget": "esports-api:build:production"
+        },
+        "development": {
+          "buildTarget": "esports-api:build:development"
         }
       }
     },

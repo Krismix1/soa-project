@@ -25,7 +25,11 @@ export class EsportsApiFeatureConnectionsService implements OnModuleInit, OnModu
   private userModel!: Neode.Model<Neo4jUser>;
 
   async onModuleInit() {
-    this.instance = new NeodeConstr('bolt://localhost:7687', 'username', 'password');
+    const neo4jUrl = process.env.NEO4J_URL || 'bolt://localhost:7687';
+    const neo4jUser = process.env.NEO4J_USERNAME || 'username';
+    const neo4jPassword = process.env.NEO4J_PASSWORD || 'password';
+    this.instance = new NeodeConstr(neo4jUrl, neo4jUser, neo4jPassword);
+
     this.userModel = this.instance.model('User', {
       user_id: {
         primary: true,
