@@ -50,8 +50,8 @@ This will make the platform available at `http://localhost:4200`.
 graph TD
     User([User])-.-uses-.->ESportsWeb(ESports Web)
     ESportsWeb-."read/write".->API(ESports API)
-    API-.-uploads(uploads attachments)-.->GCS(Google Cloud Storage)
-    ESportsWeb-.-downloads(downloads attachments from)-.->GCS
+    API-."uploads attachments".->GCS(Google Cloud Storage)
+    ESportsWeb-."downloads attachments from".->GCS
     API-."read/write".->DB(Neo4j and in-memory DBs)
 ```
 
@@ -61,10 +61,10 @@ graph TD
 graph TD
     ESportsWeb(ESports Web)-->ESportsAPIGateway(ESports API + Gateway)
     ESportsAPIGateway-->UsersAndAuthService(Users and Auth Service)
-    ESportsAPIGateway-->ConnectionsService
-    UsersAndAuthService-.-push-.->Redis
+    ESportsAPIGateway-->ConnectionsService(Connections Service)
+    UsersAndAuthService-.push.->Redis
     ConnectionsService-->Neo4J
-    ConnectionsService-.-pull-.->Redis
+    ConnectionsService-.subscribe.->Redis
 ```
 
 ### Component diagram (of ESports Platform)
