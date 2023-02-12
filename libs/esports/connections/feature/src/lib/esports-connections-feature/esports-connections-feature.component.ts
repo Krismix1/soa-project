@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LetModule } from '@ngrx/component';
 import {
   ConnectionsFacade,
@@ -8,12 +8,20 @@ import {
 } from '@project-assignment/esports/connections/data-access';
 import { EsportsUiUserProfileComponent } from '@project-assignment/esports/ui/user-profile';
 import { UserDetails } from '@project-assignment/shared/data-models-api';
+import { GravatarModule } from 'ngx-gravatar';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'project-assignment-esports-connections-feature',
   standalone: true,
-  imports: [CommonModule, EsportsConnectionsDataAccessModule, EsportsUiUserProfileComponent, LetModule],
+  imports: [
+    CommonModule,
+    GravatarModule,
+    EsportsConnectionsDataAccessModule,
+    EsportsUiUserProfileComponent,
+    LetModule,
+    RouterModule,
+  ],
   templateUrl: './esports-connections-feature.component.html',
   styleUrls: ['./esports-connections-feature.component.scss'],
 })

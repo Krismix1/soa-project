@@ -15,7 +15,7 @@ export class EsportsApiFeatureMessagesService {
   private chats: ChatEntity[] = [
     {
       id: '1',
-      title: 'Hello there',
+      title: 'Our amazing chat',
       profilePic: '',
       members: [
         {

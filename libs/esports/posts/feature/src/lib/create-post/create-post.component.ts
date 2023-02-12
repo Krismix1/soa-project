@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LetModule } from '@ngrx/component';
+import { LetModule, PushModule } from '@ngrx/component';
 import { fromEvent, map, Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'project-assignment-create-post',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LetModule],
+  imports: [CommonModule, ReactiveFormsModule, LetModule, PushModule],
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.scss'],
 })

@@ -1,11 +1,18 @@
-<div class="flex max-w-sm items-center space-x-4 rounded-xl bg-white p-6 shadow-lg">
-  <a [routerLink]="['/users', post.creator.id]" class="shrink-0 hover:bg-gray-400">
-    <img ngxGravatar [size]="24" [email]="post.creator.username" class="h-12 w-12" />
-    <span>{{ post.creator.username }}</span>
-  </a>
-  <div>
-    <!-- <div class="text-xl font-medium text-black">{{ post.title }}</div> -->
-    <p class="text-slate-500">{{ post.content }}</p>
-    <img *ngIf="post.link" class="mx-auto h-24 w-24" [src]="post.link" alt="attachment" width="384" height="512" />
+<div class="flex justify-center">
+  <div class="w-96 max-w-lg rounded-lg bg-white shadow-lg">
+    <div class="flex items-center border-b border-gray-300 py-3 px-6">
+      <img ngxGravatar [email]="post.creator.username" class="w-32" alt="avatar" />
+      <h5 class="ml-4 h-full text-xl font-medium leading-tight">{{ post.creator.username }}</h5>
+      <span class="ml-auto text-gray-700">At {{ createdAt | date : 'short' }}</span>
+    </div>
+    <div class="p-6">
+      <!-- <h5 class="mb-2 text-xl font-medium text-gray-900">Post title</h5> -->
+      <p class="mb-4 text-lg text-gray-700">
+        {{ post.content }}
+      </p>
+    </div>
+    <div *ngIf="post.link" class="flex items-center justify-center p-2">
+      <img class="rounded-lg" [src]="post.link" alt="attachment" />
+    </div>
   </div>
 </div>

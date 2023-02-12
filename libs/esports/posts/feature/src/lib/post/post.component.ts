@@ -14,4 +14,8 @@ import { GravatarModule } from 'ngx-gravatar';
 })
 export class PostComponent {
   @Input() post!: GetPostDto;
+
+  get createdAt(): Date | undefined {
+    return this.post ? new Date(this.post.createdAt * 1000) : undefined;
+  }
 }

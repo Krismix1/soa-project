@@ -8,6 +8,7 @@ import {
 import { EsportsUiUserProfileComponent } from '@project-assignment/esports/ui/user-profile';
 import { EsportsUsersDataAccessModule, UsersFacade } from '@project-assignment/esports/users/data-access';
 import { UserDetails } from '@project-assignment/shared/data-models-api';
+import { GravatarModule } from 'ngx-gravatar';
 import { filter, Observable, Subject, Subscription, withLatestFrom } from 'rxjs';
 
 @Component({
@@ -19,6 +20,7 @@ import { filter, Observable, Subject, Subscription, withLatestFrom } from 'rxjs'
     EsportsUiUserProfileComponent,
     RouterModule,
     EsportsConnectionsDataAccessModule,
+    GravatarModule,
   ],
   templateUrl: './esports-users-feature.component.html',
   styleUrls: ['./esports-users-feature.component.scss'],

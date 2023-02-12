@@ -1,12 +1,15 @@
-<div *ngIf="selectedUser$ | async as selectedUser" class="flex h-screen w-full items-center justify-center">
-  <project-assignment-user-profile [userDetails]="selectedUser"></project-assignment-user-profile>
-  <a
-    [routerLink]="['/users', selectedUser.id]"
-    routerLinkActive="text-cyan-900"
-    [routerLinkActiveOptions]="{ exact: true }"
-    class="p-2 text-cyan-600 underline"
-    >Posts</a
-  ><a routerLink="friends" routerLinkActive="text-cyan-900" class="p-2 text-cyan-600 underline">Friends</a>
+<div *ngIf="selectedUser$ | async as selectedUser" class="flex h-32 w-full items-center justify-center">
+  <div class="text-center">
+    <img ngxGravatar [email]="selectedUser.username" class="mx-auto mb-4 w-32 rounded-full" alt="Avatar" />
+    <h5 class="mb-2 text-xl font-medium leading-tight">{{ selectedUser.username }}</h5>
+    <a
+      [routerLink]="['/users', selectedUser.id]"
+      routerLinkActive="link--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="p-2 text-cyan-600 underline"
+      >Posts</a
+    ><a routerLink="friends" routerLinkActive="link--active" class="p-2 text-cyan-600 underline">Friends</a>
+  </div>
   <ng-container *ngIf="(selectIsSelectedUserTheLoggedInUser$ | async) === false">
     <button
       *ngIf="selectHasCurrentUserIncomingPendingConnectionWithSelectedUser$ | async"

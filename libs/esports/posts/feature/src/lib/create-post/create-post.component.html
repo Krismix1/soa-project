@@ -1,78 +1,69 @@
 <form [formGroup]="postForm" (submit)="submitPost()">
-  <div class="card">
-    <div class="content-container">
-      <button id="shareSomething" class="shareBtn" (click)="handleShowForm()" *ngIf="!showForm">
-        Share something.....
-      </button>
-      <div class="inputPost" *ngIf="showForm">
+  <div class="flex justify-center">
+    <button
+      *ngIf="!showForm; else createPostTemplate"
+      class="inline-block rounded bg-transparent px-6 py-2.5 text-xs font-medium uppercase leading-tight text-blue-600 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-blue-700 focus:bg-gray-100 focus:outline-none focus:ring-0 active:bg-gray-200"
+      type="button"
+      (click)="handleShowForm()"
+    >
+      Share something...
+    </button>
+    <ng-template #createPostTemplate>
+      <div class="block max-w-lg rounded-lg bg-white p-6 shadow-lg">
+        <h5 class="mb-2 text-xl font-medium leading-tight text-gray-900">Share with others what you think...</h5>
         <textarea
           id="postTextField"
-          class="inputFiled"
+          class="form-control m-0 mb-4 block w-full rounded border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none"
           placeholder="Write something here..."
           formControlName="content"
           autofocus
           #contentInput
         >
         </textarea>
-        <input
-          #file
-          type="file"
-          id="attachmentInput"
-          accept="image/png,image/jpg,image/jpeg,image/gif"
-          (change)="selectAttachment(file.files)"
-          class="block w-full text-sm text-slate-500 file:mr-4 file:rounded-full file:border-0 file:bg-violet-50 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-violet-700 hover:file:bg-violet-100"
-        />
+
         <ng-container *ngrxLet="imagePreviewData$ as previewData">
-          <div class="imgInfo" *ngIf="previewData">
+          <div class="max-w-full" *ngIf="previewData">
             <img [src]="previewData" />
-            <button (click)="discardAttachment()">Remove attachment</button>
+            <button
+              (click)="discardAttachment()"
+              type="button"
+              class="align-center ease mt-2 flex w-max cursor-pointer rounded-full bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-500 transition duration-300 active:bg-gray-300"
+            >
+              Remove attachment
+            </button>
           </div>
         </ng-container>
-        <button type="submit">Create</button>
-        <ng-container *ngrxLet="errorMessage$ as errorMessage">
-          <div *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</div>
-        </ng-container>
-      </div>
-    </div>
-    <!-- <div class="action-buttons">
-      <ul class="left">
-        <li class="image">
-          <a class="image-btn" (click)="openModal(template)">
-            <img class="photo" src="assets/photo.svg" /> <span class="btn-text">Images</span></a
+        <div class="mt-2 flex justify-between">
+          <input
+            #file
+            type="file"
+            id="attachmentInput"
+            accept="image/png,image/jpg,image/jpeg,image/gif"
+            (change)="selectAttachment(file.files)"
+            class="block text-sm text-slate-500 file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-violet-50 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-violet-700 hover:cursor-pointer hover:file:bg-violet-100"
+          />
+          <button
+            *ngIf="!(errorMessage$ | ngrxPush)"
+            class="mr-2 rounded-full border border-purple-200 px-4 py-1 text-sm font-semibold text-purple-600 hover:border-transparent hover:bg-purple-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+            type="submit"
           >
-        </li>
-      </ul>
-      <ul class="right">
-        <li>
-          <button id="btnPost" type="button" (click)="submitPost()" class="btnPost">Post</button>
-        </li>
-      </ul>
-    </div> -->
-  </div>
-  <!-- <ng-template #template>
-    <div class="modal-header">
-      <h4 class="modal-title pull-left">Upload picture</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="reset(); modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="dropbox" *ngIf="!imgURL">
-        <span style="color: red" *ngIf="message">{{ message }}</span>
-        <input class="uploadFile" type="file" #file accept="image/*" (change)="preview(file.files)" />
-        <p>
-          Drag your picture here to begin<br />
-          or click to browse
-        </p>
-      </div>
-      <div *ngIf="imgURL">
-        <h3>Selected file: {{ name }}</h3>
-        <img [src]="imgURL" height="200" />
-        <div class="imgBtns">
-          <button class="cancel" (click)="reset()">Cancel</button>
-          <button class="addImage" (click)="addImage(); modalRef.hide()">Add image</button>
+            Create
+          </button>
+          <button
+            (click)="showForm = false"
+            type="button"
+            class="inline-block rounded-full border-2 border-gray-800 px-6 py-2 text-xs font-medium uppercase leading-tight text-gray-800 transition duration-150 ease-in-out hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0"
+          >
+            Cancel
+          </button>
+        </div>
+        <div
+          *ngIf="errorMessage$ | ngrxPush as errorMessage"
+          class="my-4 rounded-lg bg-red-100 py-5 px-6 text-base text-red-700"
+        >
+          {{ errorMessage }}
         </div>
       </div>
-    </div>
-  </ng-template> -->
+    </ng-template>
+  </div>
 </form>
