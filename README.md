@@ -1,90 +1,122 @@
-# ProjectAssignment
+# ESports Platform
 
-This project was generated using [Nx](https://nx.dev).
+## Platform description
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+The system represents a platform where gamers can connect and chat with other gamers and post their latest thoughts or achievements.
 
-🔎 **Smart, Fast and Extensible Build System**
+## Use cases
 
-## Adding capabilities to your workspace
+1. Users can sign up on the platform
+2. Users can log in on the platform
+3. Users can create posts
+    1. Users can optionally attach a picture to the post
+    2. The picture can be removed from the post
+4. Users will see a feed of what other users have posted
+5. Users can connect with other users
+    1. Users can see their own friends
+    2. Users can see the friends of other users
+    3. Users can send a friend request to people they are not yet connected
+    4. Users can cancel friend requests they've sent
+    5. Users can reject friends requests they've received
+    6. Users can accept friend requests they've received
+    7. Users can delete friends
+6. Users can send messages to other users
+7. Users can receive messages from other users
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Project setup
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+This project uses [Nx](https://nx.dev/) to manage the codebase.
+Angular is used on the frontend, and NestJS on the backend.
 
-Below are our core plugins:
+The project can be started using Docker Compose, via `docker compose up`, which will make the platform available at `http://localhost:8080`.
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+Alternatively, the project can be started directly using the following commands:
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+```sh
+nvm install
+nvm use
+npm ci
+docker compose up -d redis neo4j
+npm run start:all
+```
 
-## Generate an application
+## Diagrams
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+### System diagram
 
-> You can use any of the plugins above to generate applications as well.
+```mermaid
+graph TD
+    User([User])-.-uses-.->ESportsWeb(ESports Web)
+    ESportsWeb-."read/write".->API(ESports API)
+    API-.-uploads(uploads attachments)-.->GCS(Google Cloud Storage)
+    ESportsWeb-.-downloads(downloads attachments from)-.->GCS
+    API-."read/write".->DB(Neo4j and in-memory DBs)
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+### Container diagram (of ESports Platform)
 
-## Generate a library
+```mermaid
+graph TD
+    ESportsWeb(ESports Web)-->ESportsAPIGateway(ESports API + Gateway)
+    ESportsAPIGateway-->UsersAndAuthService(Users and Auth Service)
+    ESportsAPIGateway-->ConnectionsService
+    UsersAndAuthService-.-push-.->Redis
+    ConnectionsService-->Neo4J
+    ConnectionsService-.-pull-.->Redis
+```
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+### Component diagram (of ESports Platform)
 
-> You can also use any of the plugins above to generate libraries as well.
+```mermaid
+graph TD
+    ESportsWeb(ESports Web)-->ESportsAPIGateway
+    ESportsWeb-."read using pre-signed links".->GCS(Google Cloud Storage)
 
-Libraries are shareable across libraries and applications. They can be imported from `@project-assignment/mylib`.
+    subgraph ESportsAPIGateway
+    AuthGateway
+    UsersGateway
+    ConnectionsGateway
+    ConnectionsGateway
+    posts
+    messages
+    end
 
-## Development server
+    MessagesWSGateway-->MessagesService
+    MessagesController-->MessagesService
+    subgraph messages
+    MessagesWSGateway(Messages WebSocket Gateway)
+    MessagesController
+    MessagesService
+    end
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+    subgraph "auth and users service"
+    AuthController
+    AuthService
+    UsersController
+    UsersService
+    end
 
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
+    subgraph "connections service"
+    ConnectionsController
+    ConnectionsService
+    Neo4J
+    Redis
+    end
 
-## Build
 
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+    subgraph posts
+    PostsController
+    PostsService
+    GCS
+    end
 
-## Running unit tests
+    AuthGateway-->AuthProxyClient-->AuthController-->AuthService
+    AuthController-->UsersService
+    AuthController-->ConnectionsRedisProxyClient
+    UsersGateway-->UsersProxyClient-->UsersController-->UsersService
+    ConnectionsGateway-->ConnectionsTCPProxyClient-->ConnectionsController-->ConnectionsService-->Neo4J
+    ConnectionsRedisProxyClient-->Redis-->ConnectionsController
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+    PostsController-->PostsService-->GCS
+```
