@@ -40,6 +40,8 @@ docker compose up -d redis neo4j
 npm run start:all
 ```
 
+This will make the platform available at `http://localhost:4200`.
+
 ## Diagrams
 
 ### System diagram
